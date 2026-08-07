@@ -1,27 +1,31 @@
 class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        
-        int m = matrix.length;
-        int n = matrix[0].length;
-
-        int left = 0;
-        int right = m*n-1;
+    public int search(int[] nums, int target) {
+        int left=0;
+        int right = nums.length-1;
 
         while(left <= right){
-            int mid = left + (right - left) / 2;
+            int mid = left + (right - left)/2;
+            if(nums[mid]==target)
+            return mid;
 
-            int row = mid/n;
-            int col = mid%n;
+            //Left half is sorted
+            if(nums[left] <= nums[mid]){
+                if(target >= nums[left] && target < nums[mid]){
+                    right = mid - 1;
 
-            if(matrix[row][col] == target){
-                return true;
+                }else{
+                    left = mid + 1;
+                }
             }
-            else if(matrix[row][col] < target){
-                left = mid + 1;
-            }else{
-                right = mid - 1;
+            //Right half is sorted
+            else{
+                if(target > nums[mid] && target <= nums[right]){
+                    left=mid+1;
+                }else{
+                    right = mid-1;
+                }
             }
         }
-        return false;
+        return -1;
     }
 }
